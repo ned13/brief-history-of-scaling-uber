@@ -1,0 +1,49 @@
+```plantuml
+@startuml
+allowmixing
+object User
+object ApplicationService
+object SagaCoordinator
+object SupplyA
+object Trip1
+object Trip2
+database SupplyDatastore
+database TripDatastore
+database SagaCoordinatorDatastore
+
+' 1. User calls Application Service
+User --> ApplicationService : 1. Call Service
+
+' 2. Application Service offers Trip1, Trip2 to SupplyA
+ApplicationService --> SupplyA : 2. Offer Trip1, Trip2
+
+' 3. Application Service calls Saga Coordinator
+ApplicationService --> SagaCoordinator : 3. Call Workflow
+
+' 4. Saga Coordinator modifies SupplyA
+SagaCoordinator --> SupplyA : 4. Modify SupplyA
+SupplyA --> SupplyDatastore : 5. Write to Supply Datastore
+SupplyA --> SagaCoordinator : 6. Report Success
+
+' 5. Saga Coordinator modifies Trip1
+SagaCoordinator --> Trip1 : 7. Modify Trip1
+Trip1 --> TripDatastore : 8. Write to Trip Datastore
+Trip1 --> SagaCoordinator : 9. Report Success
+
+' 6. Saga Coordinator modifies Trip2
+SagaCoordinator --> Trip2 : 10. Modify Trip2
+Trip2 --> TripDatastore : 11. Write to Trip Datastore
+Trip2 --> SagaCoordinator : 12. Report Success
+
+' 7. Saga Coordinator commits
+SagaCoordinator --> SagaCoordinatorDatastore : 13. Commit
+
+' 8. Saga Coordinator reports success to Application Service
+SagaCoordinator --> ApplicationService : 14. Report Success
+
+' 9. Application Service reports success to User
+ApplicationService --> User : 15. Report Success
+
+@enduml
+
+```
