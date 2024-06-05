@@ -1,0 +1,40 @@
+<scxml xmlns="http://www.w3.org/2005/07/scxml" version="1.0" initial="orderCreated">
+
+  <state id="orderCreated">
+    <transition event="processOrder" target="processing"/>
+  </state>
+
+  <state id="processing">
+    <onentry>
+      <log expr="'Entering processing state'"/>
+    </onentry>
+    <transition event="checkInventory" target="inventoryChecked"/>
+    <transition event="cancel" target="orderCancelled"/>
+    <state id="inventoryChecked">
+      <transition event="packaging" target="packaging"/>
+    </state>
+    <state id="packaging">
+      <transition event="generateShippingLabel" target="shippingLabelGenerated"/>
+    </state>
+    <state id="shippingLabelGenerated">
+      <transition event="shipOrder" target="shipped"/>
+    </state>
+  </state>
+
+  <state id="shipped">
+    <transition event="completeOrder" target="completed"/>
+  </state>
+
+  <state id="completed">
+    <onentry>
+      <log expr="'Order completed'"/>
+    </onentry>
+  </state>
+
+  <state id="orderCancelled">
+    <onentry>
+      <log expr="'Order cancelled'"/>
+    </onentry>
+  </state>
+
+</scxml>
