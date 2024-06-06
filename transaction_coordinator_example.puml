@@ -1,4 +1,3 @@
-```staruml
 @startuml
 allowmixing
 object User
@@ -27,4 +26,4 @@ Gateway --> Spanner : 12. Update every node in Graph
 
 
 @enduml
-```
+
